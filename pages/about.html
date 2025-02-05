@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>About Us - Decoding JS</title>
+   <link rel="icon" href="../public/logo.ico" sizes="32x32" />
+  <!-- Google Fonts for Inter and DM Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+    }
+
+    a {
+      color: #700aed;
+      text-decoration: none; /* Removed underline */
+    }
+
+    a:hover {
+      color: #700aed; /* Maintains hover color but no underline */
+    }
+
+    /* Navbar */
+    nav {
+    background-color: #1f1f1f;
+    border-radius: 1em;
+    padding: 15px 20px;
+    position: fixed;
+    width: 80%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .menu {
+    display: flex;
+    gap: 5%;
+  }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    nav .logo img {
+      width: 30px;
+      margin-right: 10px;
+    }
+
+    nav .logo span {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    nav ul {
+      font-family: 'DM Sans', sans-serif;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 5%;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      font-size: 18px;
+      font-weight: 500;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #6800e7;
+    }
+
+    .btn-contact {
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      padding: 15px 30px;
+      background-color: #700aed;
+      color: #fff;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-contact:hover {
+      background-color: #5300b8;
+      transform: scale(1.05);
+    }
+
+    /* About Us Section */
+    .about-section {
+      text-align: center;
+      padding: 100px 20px;
+      background-color: #1f1f1f;
+      color: #fff;
+      margin-top: 50px;
+    }
+
+    .about-section img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      object-fit: cover;
+    }
+
+    .about-section h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .about-section p {
+      font-size: 1.2em;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left; /* Align text to the left for better readability */
+    }
+
+    .about-section ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 20px 0;
+      font-size: 1.2em;
+    }
+
+    .about-section ul li {
+      margin-bottom: 10px;
+    }
+
+    .about-section ul li strong {
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #1f1f1f;
+      color: #e0e0e0;
+      padding: 25px;
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1em;
+    }
+
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background-color: #1f1f1f;
+      border-radius: 10px;
+      padding: 10px 20px;
+      width: calc(100% - 40px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu.show {
+      display: flex;
+    }
+
+    .hamburger {
+      display: block;
+    }
+
+    .btn-contact {
+      display: none; /* Hide contact button on smaller screens */
+    }
+      .about-section h2 {
+        font-size: 2em;
+      }
+
+      .about-section p {
+        font-size: 1em;
+      }
+
+      nav {
+        width: 90%; /* Adjust navbar width for mobile */
+      }
+    }
+    .team-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .team-row {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    flex-wrap: wrap;
+  }
+
+  .team-member {
+    text-align: center;
+    color: #fff;
+  }
+
+  .team-member img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+  }
+
+  .team-member h3 {
+    font-size: 1.5em;
+    margin: 5px 0;
+  }
+
+  .team-member p {
+    font-size: 1em;
+    color: #aaa;
+  }
+
+  @media (max-width: 768px) {
+    .team-row {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="/logo.png" alt="Logo"> <!-- Add your logo here -->
+        <span>Decoding JS</span>
+      </a>
+    </div>
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="#content">Content</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+    </ul>
+    <button class="btn-contact" onclick="scrollToContent()">Get Started</button>
+    <button class="hamburger" onclick="toggleMenu()">
+      &#9776; <!-- Unicode for hamburger icon -->
+    </button>
+  </nav>
+
+  <!-- About Us Section -->
+  <section class="about-section" id="about">
+    <div class="team-container">
+      <!-- Row 1 -->
+      <div class="team-row">
+        <div class="team-member">
+          <img src="images/anant.jpg" alt="Anant Bhatnagar">
+          <h3>Anant Bhatnagar</h3>
+          <p>Founder</p>
+        </div>
+        <div class="team-member">
+          <img src="images/Akshay.jpg" alt="Member 2">
+          <h3>Akshay Soni</h3>
+          <p>Developer</p>
+        </div>
+        <div class="team-member">
+          <img src="images/anant.jpg" alt="Member 3">
+          <h3>Dheeraj Sankhla</h3>
+          <p>Developer</p>
+        </div>
+      </div>
+  
+      <!-- Row 2 -->
+      <div class="team-row">
+        <div class="team-member">
+          <img src="images/Devpal.jpg" alt="Member 4">
+          <h3>Devpal Singh</h3>
+          <p>UI/UX Designer</p>
+        </div>
+        <div class="team-member">
+          <img src="images/Deepak.jpg" alt="Member 5">
+          <h3>Deepak Songra</h3>
+          <p>Project Support</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2024 Decoding JS. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Scroll to About section
+    function toggleMenu() {
+    const menu = document.querySelector('.menu');
+    menu.classList.toggle('show');
+  }
+    function scrollToAbout() {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+
+</body>
+</html>

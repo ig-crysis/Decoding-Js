@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Course</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #ccc;
+    }
+    .chapter {
+      background: #1f1f1f;
+      padding: 20px;
+      margin: 10px auto;
+      border-radius: 8px;
+      width: 80%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+    .chapter-title {
+      flex-grow: 1;
+      text-align: left;
+      font-size: 1.1rem;
+    }
+    .button-container {
+      display: flex;
+      gap: 12px;
+    }
+    .edit-btn, .delete-btn {
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+    .edit-btn {
+      background: #007bff;
+      color: white;
+    }
+    .edit-btn:hover {
+      background: #0056b3;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      color: white;
+    }
+    .delete-btn:hover {
+      background: #c0392b;
+    }
+    .form-container {
+      margin: 30px auto;  /* This sets both top/bottom and left/right margins */
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 8px;
+      width: 60%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+    .form-container input {
+      padding: 10px;
+      margin: 10px 0;
+      width: calc(100% - 22px);
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background: #2e2e2e;
+      color: white;
+    }
+    .form-container button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #2ecc71;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .form-container button:hover {
+      background: #27ae60;
+    }
+    #delete-course-btn {
+      padding: 12px 24px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s ease;
+    }
+    #delete-course-btn:hover {
+      background: #c0392b;
+    }
+    #edit-modal {
+      display: none;
+      background: rgba(0, 0, 0, 0.7);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      padding: 20px;
+    }
+    #edit-modal .modal-content {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 8px;
+      width: 40%;
+    }
+    #edit-modal input {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    #edit-modal button {
+      margin: 5px;
+      background: #2ecc71;
+    }
+    #edit-modal button:hover {
+      background: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <h1 id="course-title">Loading...</h1>
+  <div id="chapters-container"></div>
+
+  <div class="form-container">
+    <h2>Add New Chapter</h2>
+    <form id="addChapterForm">
+      <input type="text" id="chapterTitle" placeholder="Chapter Title" required>
+      <input type="file" id="mdFile" accept=".md" required>
+      <button type="submit">Add Chapter</button>
+    </form>
+  </div>
+
+  <button id="delete-course-btn" onclick="deleteCourse()">Delete Course</button>
+
+  <div id="edit-modal">
+    <div class="modal-content">
+      <h2>Edit Chapter</h2>
+      <input type="text" id="newChapterTitle" placeholder="New Chapter Title">
+      <input type="file" id="newMdFile" accept=".md">
+      <button onclick="saveChapterChanges()">Save Changes</button>
+      <button onclick="closeEditModal()">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    let courseName;
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      courseName = params.get('course');
+
+      if (!courseName) {
+        document.getElementById('course-title').textContent = 'Course not specified.';
+        return;
+      }
+
+      document.getElementById('course-title').textContent = `Editing: ${courseName}`;
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}`);
+        const data = await response.json();
+
+        if (response.ok) {
+          const chaptersContainer = document.getElementById('chapters-container');
+          data.chapters.forEach(chapter => {
+            const chapterDiv = document.createElement('div');
+            chapterDiv.className = 'chapter';
+            chapterDiv.innerHTML = `
+              <span class="chapter-title">${chapter.title}</span>
+              <div class="button-container">
+                <button class="edit-btn" onclick="openEditModal('${chapter.title}')">Edit</button>
+                <button class="delete-btn" onclick="deleteChapter('${chapter.title}')">Delete</button>
+              </div>
+            `;
+            chaptersContainer.appendChild(chapterDiv);
+          });
+        } else {
+          document.getElementById('course-title').textContent = data.error || 'Failed to load topics.';
+        }
+      } catch (error) {
+        console.error('Error fetching course:', error);
+        document.getElementById('course-title').textContent = 'Error loading topics.';
+      }
+    });
+
+    document.getElementById('addChapterForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const chapterTitle = document.getElementById('chapterTitle').value;
+      const mdFile = document.getElementById('mdFile').files[0];
+      const formData = new FormData();
+      formData.append('chapterTitle', chapterTitle);
+      formData.append('mdFile', mdFile);
+
+      try {
+        const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}/addChapter`, {
+          method: 'POST',
+          body: formData
+        });
+        if (response.ok) {
+          alert('Chapter added successfully!');
+          location.reload();
+        }
+      } catch (error) {
+        console.error('Error adding chapter:', error);
+      }
+    });
+
+    async function deleteChapter(chapterTitle) {
+  if (!confirm(`Are you sure you want to delete '${chapterTitle}'?`)) return;
+  
+  try {
+    const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}/deleteChapter`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chapterTitle })
+    });
+
+    if (response.ok) {
+      alert('Chapter deleted successfully!');
+      location.reload();
+    } else {
+      alert('Failed to delete chapter.');
+    }
+  } catch (error) {
+    console.error('Error deleting chapter:', error);
+  }
+}
+
+    async function deleteCourse() {
+      if (!confirm(`Are you sure you want to delete '${courseName}'? This cannot be undone.`)) return;
+      try {
+        const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}`, {
+          method: 'DELETE'
+        });
+        if (response.ok) {
+          alert('Course deleted successfully!');
+          window.location.href = 'index.html';
+        }
+      } catch (error) {
+        console.error('Error deleting course:', error);
+      }
+    }
+
+    let editingChapter = '';
+
+function openEditModal(chapterTitle) {
+  document.getElementById('edit-modal').style.display = 'block';
+  document.getElementById('newChapterTitle').value = chapterTitle;
+  editingChapter = chapterTitle;
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal').style.display = 'none';
+}
+
+async function saveChapterChanges() {
+  
+  const newTitle = document.getElementById('newChapterTitle').value;
+  const newFile = document.getElementById('newMdFile').files[0];
+
+  const formData = new FormData();
+  formData.append('oldTitle', editingChapter);
+  formData.append('newTitle', newTitle);
+  if (newFile) {
+    formData.append('newMdFile', newFile);
+  }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}/editChapter`, {
+      method: 'PUT',
+      body: formData
+    });
+
+    if (response.ok) {
+      alert('Chapter updated successfully!');
+      location.reload();
+    } else {
+      alert('Failed to update chapter.');
+    }
+  } catch (error) {
+    console.error('Error updating chapter:', error);
+  }
+}
+  </script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset=UTF-8>
+  <meta name=viewport content=width=device-width, initial-scale=1.0>
+  <title>Add New Course - Admin Panel</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; text-align: center; padding: 50px; }
+    form { background: #1f1f1f; padding: 20px; border-radius: 10px; display: inline-block; }
+    input, button { display: block; width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+    button { background-color: #700aed; color: #fff; cursor: pointer; }
+    button:hover { background-color: #5300b8; }
+  </style>
+</head>
+<body>
+  <h1>Add New Course/Language</h1>
+  <form id=addCourseForm>
+    <input type=text id=courseTitle placeholder=Course Title (e.g., Ruby, PHP) required>
+    <input type=text id=chapterTitle placeholder=Chapter Title (e.g., Introduction) required>
+    <input type=file id=mdFile accept=.md required>
+    <button type=submit>Add Course</button>
+  </form>
+
+  <script>
+    document.getElementById('addCourseForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const courseTitle = document.getElementById('courseTitle').value;
+      const chapterTitle = document.getElementById('chapterTitle').value;
+      const mdFile = document.getElementById('mdFile').files[0];
+
+      const formData = new FormData();
+      formData.append('courseTitle', courseTitle);
+      formData.append('chapterTitle', chapterTitle);
+      formData.append('mdFile', mdFile);
+
+      try {
+        const response = await fetch('http://localhost:5000/api/courses', {
+          method: 'POST',
+          body: formData
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert('Course added successfully!');
+          window.location.href = 'index.html';
+        } else {
+          alert(data.error || 'Failed to add course.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while adding the course.');
+      }
+    });
+  </script>
+</body>
+</html>
+

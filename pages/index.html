@@ -148,6 +148,14 @@
     }
 
     /* New Tech Buttons Styles */
+    .courses-container{
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 15px;
+      flex-wrap: wrap;
+    }
+
     .tech-buttons {
       display: flex;
       justify-content: center;
@@ -281,6 +289,36 @@
       font-size: 1.1em;
       line-height: 1.6;
     }
+ 
+.btn-admin {
+ width: 16em;
+ height: 3em;
+ border-radius: 30em;
+ font-size: 15px;
+ font-family: inherit;
+ border: none;
+ position: relative;
+ overflow: hidden;
+ z-index: 1;
+}
+
+.btn-admin::before {
+ content: '';
+ width: 0;
+ height: 3em;
+ border-radius: 30em;
+ position: absolute;
+ top: 0;
+ left: 0;
+ background-image: linear-gradient(to right, #0fd850 0%, #f9f047 100%);
+ transition: .5s ease;
+ display: block;
+ z-index: -1;
+}
+
+.btn-admin:hover::before {
+ width: 16em;
+}
 
     /* Footer */
     footer {
@@ -396,15 +434,16 @@
   <section class="hero" id="home">
     <h1>Decoding JS</h1>
     <p>Explore JavaScript and understand <br> Why Your Code Always Breaks on Monday.</p>
-    <button class="btn" onclick="handleNavigation('general')">Get Started</button>
+    <button class="btn" onclick="handelNavGen('general')">Get Started</button>
     <div id="welcome-msg" style="margin-top: 20px; font-size: 1.2em; color: #fff;"></div>
     <div class="tech-buttons">
-      <button class="tech-btn html" onclick="handleNavigation('html')">HTML</button>
-      <button class="tech-btn css" onclick="handleNavigation('css')">CSS</button>
-      <button class="tech-btn js" onclick="handleNavigation('js')">JavaScript</button>
-      <button class="tech-btn python" onclick="handleNavigation('py')">Python</button>
-      <button class="tech-btn sql" onclick="handleNavigation('sql')">SQL</button>
+      <button class="tech-btn html" onclick="handleNavigation('HTMLMD')">HTML</button>
+      <button class="tech-btn css" onclick="handleNavigation('CSSMD')">CSS</button>
+      <button class="tech-btn js" onclick="handleNavigation('JSMD')">JavaScript</button>
+      <button class="tech-btn python" onclick="handleNavigation('PYMD')">Python</button>
+      <button class="tech-btn sql" onclick="handleNavigation('SQLMD')">SQL</button>
     </div>
+    <div id="courses-container" class="courses-container"></div>
   </section>
 
   <footer>
@@ -415,16 +454,27 @@
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script>
     mermaid.initialize({ startOnLoad: false });
-
-    function handleNavigation(language) {
+    function handelNavGen(general) {
       const token = localStorage.getItem('authToken');
       const userName = localStorage.getItem('userName');
 
       if (!token) {
-        localStorage.setItem('redirectLanguage', language);
+        localStorage.setItem('redirectLanguage', general);
+        window.location.href = 'login.html';
+    }
+    else{
+      alert("Choose the language you wanna explore");
+    }
+  }
+    function handleNavigation(course) {
+      const token = localStorage.getItem('authToken');
+      const userName = localStorage.getItem('userName');
+
+      if (!token) {
+        localStorage.setItem('redirectLanguage', course);
         window.location.href = 'login.html';
       } else {
-        alert("Choose the language you wanna explore");
+        window.location.href = `topics.html?course=${encodeURIComponent(course)}`;
       }
     }
 
@@ -438,7 +488,47 @@
     window.onload = function() {
       document.querySelector('.hero').style.opacity = 1;
       displayWelcomeMessage();
-    };
+
+      if (localStorage.getItem('isAdmin')) {
+      const adminBtn = document.createElement('button');
+      adminBtn.textContent = 'Add New Course/Language';
+      adminBtn.className = 'btn-admin';
+      adminBtn.style.marginTop = '20px';
+      adminBtn.onclick = () => window.location.href = 'add-course.html';
+      document.querySelector('.hero').appendChild(adminBtn);
+    }
+  };
+  document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('http://localhost:5000/api/courses');
+    const courses = await response.json();
+
+    if (response.ok) {
+      const container = document.getElementById('courses-container');
+      const predefinedCourses = ["HTMLMD", "CSSMD", "JSMD", "PYMD", "SQLMD"];
+
+      courses.forEach(course => {
+        if (!predefinedCourses.includes(course.title)) {
+          const button = document.createElement('button');
+          button.className = 'tech-btn';
+          button.textContent = course.title;
+          button.style.backgroundColor = getRandomColor();
+          button.onclick = () => window.location.href = `topics.html?course=${encodeURIComponent(course.title)}`;
+          container.appendChild(button);
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+  }
+});
+
+// Function to generate random colors
+function getRandomColor() {
+  const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FF8C33', '#B833FF', '#33FFF5', '#F5FF33'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
   </script>
 </body>
 </html>

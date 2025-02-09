@@ -5,22 +5,130 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - Decoding JS</title>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #121212; color: #fff; text-align: center; padding: 50px; }
-    form { background: #1f1f1f; padding: 20px; border-radius: 10px; display: inline-block; }
-    input { display: block; width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
-    button { padding: 10px 20px; background-color: #700aed; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background-color: #5300b8; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: url('/images/bg1.jpeg') center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container {
+      width: 400px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    h1 {
+      color: white;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 32px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .input-group ion-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 15px;
+      padding-left: 45px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      color: white;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      background: white;
+      border: none;
+      border-radius: 10px;
+      color: #333;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button ion-icon {
+      font-size: 20px;
+    }
+
+    .login-link {
+      text-align: center;
+      color: white;
+    }
+
+    .login-link a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>Register</h1>
-  <form id="registerForm">
-    <input type="text" id="username" placeholder="Username" required>
-    <input type="email" id="email" placeholder="Email" required>
-    <input type="password" id="password" placeholder="Password" required>
-    <button type="submit">Register</button>
-  </form>
-  <p>Already have an account? <a href="login.html" style="color: #700aed;">Login here</a></p>
+  <div class="container">
+    <h1>Register</h1>
+    <form id="registerForm">
+      <div class="input-group">
+        <ion-icon name="person-outline"></ion-icon>
+        <input type="text" id="username" placeholder="Username" required>
+      </div>
+      <div class="input-group">
+        <ion-icon name="mail-outline"></ion-icon>
+        <input type="email" id="email" placeholder="Email" required>
+      </div>
+      <div class="input-group">
+        <ion-icon name="lock-closed-outline"></ion-icon>
+        <input type="password" id="password" placeholder="Password" required>
+      </div>
+      <button type="submit">
+        <ion-icon name="person-add-outline"></ion-icon>
+        Register
+      </button>
+      <div class="login-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </form>
+  </div>
+
+  <!-- Ionicons -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <script>
     document.getElementById('registerForm').addEventListener('submit', async (e) => {

@@ -12,34 +12,47 @@ router.post('/courses', upload.single('mdFile'), async (req, res) => {
   const mdFile = req.file;
 
   try {
-    // Create course folder if it doesn't exist
+    if (!courseTitle || !chapterTitle || !mdFile) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    console.log(`Creating course: ${courseTitle}, Chapter: ${chapterTitle}`);
+
     const courseFolder = path.join(process.cwd(), `public/${courseTitle}`);
     if (!fs.existsSync(courseFolder)) {
       fs.mkdirSync(courseFolder);
     }
 
-    // Move uploaded file to course folder
-    const filePath = path.join(courseFolder, `${chapterTitle}.md`);
+    // ✅ Correctly define fileName before using it
+    const fileName = `${chapterTitle}.md`;
+    const filePath = path.join(courseFolder, fileName);
+
     fs.renameSync(mdFile.path, filePath);
 
-    // Save course & chapter info to MongoDB
+    // Convert absolute path to relative
+    const relativeFilePath = `public/${courseTitle}/${fileName}`;
+    console.log(`File saved at: ${relativeFilePath}`);
+
     let course = await Course.findOne({ title: courseTitle });
     if (!course) {
       course = new Course({
         title: courseTitle,
-        chapters: [{ title: chapterTitle, filePath: filePath.replace(/\\/g, '/') }]
+        chapters: [{ title: chapterTitle, filePath: relativeFilePath }]
       });
     } else {
-      course.chapters.push({ title: chapterTitle, filePath: filePath.replace(/\\/g, '/') });
+      course.chapters.push({ title: chapterTitle, filePath: relativeFilePath });
     }
-    await course.save();
 
+    await course.save();
+    console.log(`Course saved successfully: ${courseTitle}`);
     res.json({ message: 'Course added successfully!' });
+
   } catch (error) {
-    console.error(error);
+    console.error('Error in adding course:', error);
     res.status(500).json({ error: 'Failed to add course' });
   }
 });
+
 
 router.get('/courses/:courseName', async (req, res) => {
   const { courseName } = req.params;
@@ -56,6 +69,7 @@ router.get('/courses/:courseName', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch course' });
   }
 });
+//Edit Chapter
 router.put('/courses/:courseName/editChapter', upload.single('newMdFile'), async (req, res) => {
   const { courseName } = req.params;
   const { oldTitle, newTitle } = req.body;
@@ -67,33 +81,30 @@ router.put('/courses/:courseName/editChapter', upload.single('newMdFile'), async
       return res.status(404).json({ error: 'Course not found' });
     }
 
-    // Find the correct chapter
+    // Find the chapter to edit
     const chapterIndex = course.chapters.findIndex(ch => ch.title === oldTitle);
     if (chapterIndex === -1) {
       return res.status(404).json({ error: 'Chapter not found' });
     }
 
-    // Construct the new file path
-    let newFilePath = course.chapters[chapterIndex].filePath;
-    
-    // If a new file is uploaded, update the file path
+    // Define the new file path (relative)
+    let newFilePath = `public/${courseName}/${newTitle}.md`;
+
+    // If a new file is uploaded, replace the file
     if (newFile) {
-      newFilePath = path.join(process.cwd(), `public/${courseName}/${newTitle}.md`);
-      fs.renameSync(newFile.path, newFilePath);
-      newFilePath = newFilePath.replace(/\\/g, '/'); // Normalize path for cross-platform
+      const absoluteNewFilePath = path.join(process.cwd(), newFilePath);
+      fs.renameSync(newFile.path, absoluteNewFilePath);
     } else {
-      // Rename the existing file to match the new title
+      // If only the title is updated, rename the existing file
       const oldFilePath = path.join(process.cwd(), `public/${courseName}/${oldTitle}.md`);
-      const updatedFilePath = path.join(process.cwd(), `public/${courseName}/${newTitle}.md`);
+      const updatedFilePath = path.join(process.cwd(), newFilePath);
 
       if (fs.existsSync(oldFilePath)) {
         fs.renameSync(oldFilePath, updatedFilePath);
       }
-
-      newFilePath = updatedFilePath.replace(/\\/g, '/');
     }
 
-    // Update the chapter details in MongoDB
+    // Update MongoDB with the new title and correct relative path
     course.chapters[chapterIndex].title = newTitle;
     course.chapters[chapterIndex].filePath = newFilePath;
 
@@ -104,6 +115,7 @@ router.put('/courses/:courseName/editChapter', upload.single('newMdFile'), async
     res.status(500).json({ error: 'Failed to update chapter' });
   }
 });
+
 
 router.delete('/courses/:courseName/deleteChapter', async (req, res) => {
   const { courseName } = req.params;
@@ -154,26 +166,32 @@ router.post('/courses/:courseName/addChapter', upload.single('mdFile'), async (r
       return res.status(404).json({ error: 'Course not found' });
     }
 
-    // Ensure the course folder exists
+    // Ensure course folder exists
     const courseFolder = path.join(process.cwd(), `public/${courseName}`);
     if (!fs.existsSync(courseFolder)) {
       fs.mkdirSync(courseFolder);
     }
 
-    // Move uploaded file to course folder
-    const filePath = path.join(courseFolder, `${chapterTitle}.md`);
+    // ✅ Correct file path handling
+    const fileName = `${chapterTitle}.md`.trim(); // Trim to avoid spaces at the end
+    const filePath = path.join(courseFolder, fileName);
     fs.renameSync(mdFile.path, filePath);
 
-    // Add the new chapter to MongoDB
-    course.chapters.push({ title: chapterTitle, filePath: filePath.replace(/\\/g, '/') });
+    // ✅ Store RELATIVE path instead of absolute
+    const relativeFilePath = `public/${courseName}/${fileName}`;
+
+    // Update MongoDB
+    course.chapters.push({ title: chapterTitle, filePath: relativeFilePath });
     await course.save();
 
+    console.log(`Chapter added successfully: ${chapterTitle}`);
     res.json({ message: 'Chapter added successfully!' });
   } catch (error) {
-    console.error(error);
+    console.error('Error in adding chapter:', error);
     res.status(500).json({ error: 'Failed to add chapter' });
   }
 });
+
 router.get('/courses', async (req, res) => {
   try {
     const courses = await Course.find({}, 'title'); // Fetch only course titles

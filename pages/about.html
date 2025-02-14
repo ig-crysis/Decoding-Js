@@ -8,6 +8,8 @@
    <link rel="icon" href="../public/logo.ico" sizes="32x32" />
   <!-- Google Fonts for Inter and DM Sans -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
   <style>
     /* Global Styles */
@@ -168,6 +170,71 @@
       font-weight: 600;
     }
 
+    p {
+      max-width: 800px;
+      margin: 0 auto 15px auto;
+      line-height: 1.8;
+      color: #d3d3d3;
+      padding: 0 15px;
+      font-size: 20px;
+    }
+    .section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .section h1{
+      margin-top: 10%;
+    }
+    .section1 {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: auto;
+      margin-top: -50px;
+      text-align: center;
+    }
+    .tech-stack {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      justify-content: center;
+      gap: 20px;
+      margin-top: 5px;
+    }
+    .tech-item {
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.3s ease;
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .tech-item ion-icon {
+      font-size: 50px;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .tech-item:hover {
+      transform: translateY(-5px);
+    }
+    .html { background-color: #e34c26; }
+    .css { background-color: #264de4; }
+    .js { background-color: #f0db4f; color: #323330; }
+    .mongo { background-color: #4DB33D; }
+    .express { background-color: #404040; }
+    .node { background-color: #68A063; }
+    .challenges ul {
+      max-width: 800px;
+      margin: 0 auto;
+      padding-left: 20px;
+      list-style-type: none;
+    }
+    .challenges li {
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
     /* Footer */
     footer {
       background-color: #1f1f1f;
@@ -273,7 +340,7 @@
     </div>
     <ul class="menu">
       <li><a href="index.html">Home</a></li>
-      <li><a href="#content">Content</a></li>
+      <li><a href="content.html">Content</a></li>
       <li><a href="./about.html">About</a></li>
       <li><a href="./contact.html">Contact</a></li>
     </ul>
@@ -283,10 +350,57 @@
     </button>
   </nav>
 
+  <section class="section">
+    <h1>About Decoding JS</h1>
+    <p>Decoding JS is an educational platform designed to provide a user-friendly and intuitive interface for learning various languages concepts. Our goal is to simplify complex topics using well-structured notes in the form of Markdown (.md) files, making them easy to read and understand. We aim to create awareness about the potential of .md files for documentation and learning materials, while also offering a visually appealing and interactive learning experience.</p>
+  </section>
+
+  <section class="section1">
+    <h2>Tech Stack</h2>
+    <div class="tech-stack">
+      <div class="tech-item html">
+        <ion-icon name="logo-html5"></ion-icon>
+        HTML
+      </div>
+      <div class="tech-item css">
+        <ion-icon name="logo-css3"></ion-icon>
+        CSS
+      </div>
+      <div class="tech-item js">
+        <ion-icon name="logo-javascript"></ion-icon>
+        JavaScript
+      </div>
+      <div class="tech-item mongo">
+        <ion-icon name="leaf-outline"></ion-icon>
+        MongoDB
+      </div>
+      <div class="tech-item express">
+        <ion-icon name="server-outline"></ion-icon>
+        Express.js
+      </div>
+      <div class="tech-item node">
+        <ion-icon name="logo-nodejs"></ion-icon>
+        Node.js
+      </div>
+    </div>
+  </section>
+
+  <section class="section challenges">
+    <h2>Challenges Faced</h2>
+    <ul>
+      <li>Dynamic handling of Markdown files and rendering them seamlessly.</li>
+      <li>Ensuring secure authentication with JWT tokens and maintaining session security.</li>
+      <li>Managing dynamic folder creation and file uploads in a scalable manner.</li>
+      <li>Maintaining a consistent and responsive user interface.</li>
+      <li>Handling relative paths for seamless file fetching and display.</li>
+    </ul>
+  </section>
+
   <!-- About Us Section -->
   <section class="about-section" id="about">
     <div class="team-container">
       <!-- Row 1 -->
+       <h2>Team Panel</h2>
       <div class="team-row">
         <div class="team-member">
           <img src="images/anant.jpg" alt="Anant Bhatnagar">
@@ -299,7 +413,7 @@
           <p>Developer</p>
         </div>
         <div class="team-member">
-          <img src="images/anant.jpg" alt="Member 3">
+          <img src="images/Dheeraj.jpg" alt="Member 3">
           <h3>Dheeraj Sankhla</h3>
           <p>Developer</p>
         </div>
@@ -323,7 +437,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2024 Decoding JS. All rights reserved.</p>
+    <h4>&copy; 2025 Decoding JS. All rights reserved.<h4>
   </footer>
 
   <script>

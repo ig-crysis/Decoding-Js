@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Features - Decoding JS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+    h1, h2, h3 {
+      text-align: center;
+      color: #fff;
+    }
+    a {
+      color: #700aed;
+      text-decoration: none; /* Removed underline */
+    }
+
+    a:hover {
+      color: #700aed; /* Maintains hover color but no underline */
+    }
+    /* Navbar */
+    nav {
+    background-color: #1f1f1f;
+    border-radius: 1em;
+    padding: 15px 20px;
+    position: fixed;
+    width: 80%;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .hamburger {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+
+  .menu {
+    display: flex;
+    gap: 5%;
+  }
+
+    nav .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    nav .logo img {
+      width: 30px;
+      margin-right: 10px;
+    }
+
+    nav .logo span {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      color: #fff;
+    }
+
+    nav ul {
+      font-family: 'DM Sans', sans-serif;
+      list-style: none;
+      padding: 0;
+      display: flex;
+      gap: 5%;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      font-size: 18px;
+      font-weight: 500;
+      color: #fff;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #6800e7;
+    }
+    .btn-contact {
+      font-weight: 500;
+      font-family: 'DM Sans', sans-serif;
+      padding: 15px 30px;
+      background-color: #700aed;
+      color: #fff;
+      font-size: 1.1em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-contact:hover {
+      background-color: #5300b8;
+      transform: scale(1.05);
+    }
+
+    .section {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .feature {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 80px;
+    }
+    .feature img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-top: 15px;
+    }
+    .feature h3 {
+      color: #fff;
+    }
+    .feature p {
+      color: #d3d3d3;
+    }
+    /* Media Queries */
+    @media (max-width: 768px) {
+      .menu {
+      display: none;
+      flex-direction: column;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      background-color: #1f1f1f;
+      border-radius: 10px;
+      padding: 10px 20px;
+      width: calc(100% - 40px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .menu.show {
+      display: flex;
+    }
+
+    .hamburger {
+      display: block;
+    }
+
+    .btn-contact {
+      display: none; /* Hide contact button on smaller screens */
+    }
+      .about-section h2 {
+        font-size: 2em;
+      }
+
+      .about-section p {
+        font-size: 1em;
+      }
+
+      nav {
+        width: 90%; /* Adjust navbar width for mobile */
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">
+      <a href="index.html">
+        <img src="/logo.png" alt="Logo"> <!-- Add your logo here -->
+        <span>Decoding JS</span>
+      </a>
+    </div>
+    <ul class="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="content.html">Content</a></li>
+      <li><a href="./about.html">About</a></li>
+      <li><a href="./contact.html">Contact</a></li>
+    </ul>
+    <button class="btn-contact" onclick="scrollToContent()">Get Started</button>
+    <button class="hamburger" onclick="toggleMenu()">
+      &#9776; <!-- Unicode for hamburger icon -->
+    </button>
+  </nav>
+  <section class="section">
+    <div class="feature">
+      <h1 style="font-size: 40px;">What features the Admin Gets ?</h1>
+      <h3>1. Add New Course/Language</h3>
+      <p>Admins can add a new course or language by clicking the 'Add New Course' button that appears after logging in as an admin. They can provide the course name, chapter title, and upload the corresponding Markdown (.md) file.</p>
+      <img src="images/admin1.jpg" alt="Add Course Screenshot">
+      <img src="images/admin2.jpg" alt="Add Course Screenshot">
+    </div>
+
+    <div class="feature">
+      <h3>2. Edit Course</h3>
+      <p>Each course page provides an 'Edit Course' button. Admins can update the course by adding more chapters, editing existing chapter names, or uploading new .md files to replace existing ones.</p>
+      <img src="images/admin3.jpg" alt="Edit Course Screenshot">
+    </div>
+
+    <div class="feature">
+      <h3>3. Add New Chapter</h3>
+      <p>Admins can add new chapters to an existing course by specifying the chapter title and uploading a new .md file. The chapter is immediately displayed in the course's chapter list.</p>
+      <img src="images/admin4.jpg" alt="Add Chapter Screenshot">
+    </div>
+
+    <div class="feature">
+      <h3>4. Edit or Delete Chapter</h3>
+      <p>Admins have the flexibility to edit an existing chapter's name, replace its .md file, or delete the chapter entirely from the course page.</p>
+      <img src="images/admin5.jpg" alt="Edit or Delete Chapter Screenshot">
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <center><h4>&copy; 2025 Decoding JS. All rights reserved.<h4></center>
+  </footer>
+
+  <script>
+    // Scroll to About section
+    function toggleMenu() {
+    const menu = document.querySelector('.menu');
+    menu.classList.toggle('show');
+  }
+    function scrollToAbout() {
+      document.getElementById('about').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>

@@ -238,6 +238,19 @@
       }
     }
 
+    .logout-btn {
+      display: none;
+      font-weight: 600;
+      padding: 10px 20px;
+      background-color: #000000;
+      color: #fff;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
     .btn {
       font-weight: 600;
       padding: 20px 40px;
@@ -250,7 +263,7 @@
       transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    .btn:hover {
+    .logout-btn:hover,.btn:hover {
       background-color: #5300b8;
       transform: scale(1.1);
     }
@@ -424,7 +437,7 @@
       <li><a href="./about.html">About</a></li>
       <li><a href="./contact.html">Contact</a></li>
     </ul>
-    <button class="btn-contact" onclick="handleNavigation('general')">Get Started</button>
+    <button class="btn-contact" onclick="handelNavGen('general')">Get Started</button>
     <button class="hamburger" onclick="toggleMenu()">
       &#9776;
     </button>
@@ -433,7 +446,7 @@
   <!-- Hero Section -->
   <section class="hero" id="home">
     <h1>Decoding JS</h1>
-    <p>Explore JavaScript and understand <br> Why Your Code Always Breaks on Monday.</p>
+    <p>Explore the courses and understand <br> Why Your Code Always Breaks on Monday.</p>
     <button class="btn" onclick="handelNavGen('general')">Get Started</button>
     <div id="welcome-msg" style="margin-top: 20px; font-size: 1.2em; color: #fff;"></div>
     <div class="tech-buttons">
@@ -448,6 +461,7 @@
 
   <footer>
     <p>&copy; 2024 Decoding JS. All rights reserved.</p>
+    <center><button class="logout-btn" id="logout-btn" onclick="logout()">Sign-out</button></center>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -466,6 +480,12 @@
       alert("Choose the language you wanna explore");
     }
   }
+
+  function toggleMenu() {
+    const menu = document.querySelector('.menu');
+    menu.classList.toggle('show');
+  }
+
     function handleNavigation(course) {
       const token = localStorage.getItem('authToken');
       const userName = localStorage.getItem('userName');
@@ -528,7 +548,19 @@ function getRandomColor() {
   const colors = ['#FF5733', '#33FF57', '#3357FF', '#FF33A1', '#FF8C33', '#B833FF', '#33FFF5', '#F5FF33'];
   return colors[Math.floor(Math.random() * colors.length)];
 }
-
+document.addEventListener('DOMContentLoaded', () => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    document.getElementById('logout-btn').style.display = 'block';
+  }
+});
+// Logout Function
+function logout() {
+  localStorage.removeItem('authToken');
+  localStorage.removeItem('userName');
+  alert('You have successfully logged out!');
+  window.location.href = 'index.html';
+}
   </script>
 </body>
 </html>

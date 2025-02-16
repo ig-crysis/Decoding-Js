@@ -200,7 +200,7 @@
     document.getElementById('course-title').textContent = `${courseName} Topics`;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/courses/${encodeURIComponent(courseName)}`);
+      const response = await fetch(`http://https://decoding-js.onrender.com/api/courses/${encodeURIComponent(courseName)}`);
       const data = await response.json();
 
       if (response.ok) {

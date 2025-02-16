@@ -96,86 +96,127 @@ nav ul li a:hover {
 
 
     /* Contact Section */
-    .contact-section {
-      padding: 80px 20px; /* Reduced padding to bring up the icons */
+    .head {
       text-align: center;
-      background-color: #1f1f1f;
+      font-size: 4em;
+      color: purple;
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-weight: bold;
+      margin-top: 3em;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      position: relative;
+      animation: fadeIn 1.5s ease-in-out;
     }
 
-    .contact-section h1 {
-      font-size: 3em;
-      color: #fff;
-      margin-bottom: 20px; /* Reduced margin */
+    .head::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 5px;
+      background: purple;
+      margin: 10px auto;
     }
+    
+      /*content */ 
 
-    .profile {
+      .content {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
     }
 
-    .profile img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      border: 3px solid #700aed;
-    }
+    a {
+      font-size: 20px;
+      color:white;
 
-    .profile h2 {
-      font-size: 2em;
-      color: #fff;
-    }
-
-    .profile p {
-      font-size: 1.2em;
-      color: #e0e0e0;
-      max-width: 600px;
-    }
-
-    /* Social Links */
-    .social-links {
+    }  
+    a:hover {
+      color:white;
+    } 
+    .btn {
       display: flex;
       justify-content: center;
-      gap: 20px;
-      margin-top: 20px; /* Reduced margin to bring up the icons */
+      align-items: center;
+      word-wrap: break-word;
+        background-color: #1f1f1f;
+      color: white;
+      height: 70px;
+      width: 150px;
+      font-size: 16px;
+      border: 0;
+      border-radius: 8px;
+      margin: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      overflow: hidden;
+      }
+
+      .btn:hover {
+        
+        background-color: #700aed;
+      transform: scale(1.05);
+      color:white;
+      }
+
+      .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+      transition: left 0.3s ease-in-out;
+      color:white;
+
+    }
+    .btn:hover::after {
+      left: 100%;
+      color:white;
     }
 
-    .social-links a {
-      font-size: 1.5em;
-      color: #700aed;
-      transition: color 0.3s ease;
-    }
 
-    .social-links a:hover {
-      color: #5300b8;
-    }
+      .btn2 {
+        margin-left: 20px;
+      }
+
+
+      /*      */
+    
 
     /* Footer */
     footer {
+      width:100%;
       background-color: #1f1f1f;
       color: #e0e0e0;
-      padding: 25px;
+      padding: 1em;
       text-align: center;
-      margin-top: 50px;
+      margin-bottom: 0px;
       font-size: 1em;
+      position: fixed;
+      align-items: end;
+      bottom: 0;
     }
-
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     /* Media Queries */
     @media (max-width: 768px) {
       nav li{
        display: none;
       }
-      .profile h2 {
+      .head {
         font-size: 1.8em;
       }
 
-      .profile p {
-        font-size: 1em;
-      }
-
-      .social-links a {
-        font-size: 1.2em;
+      .btn {
+        font-size: 10px;
+        height: 50px;
+        width:120px;
       }
     }
   </style>
@@ -193,48 +234,34 @@ nav ul li a:hover {
     <ul>
       <li><a href="index.html">Home</a></li>
       <li><a href="./about.html">About</a></li>
-      <li><a href="./contact.html">Contact</a></li>
+      <li><a href="content.html">Features</a></li>
+      <li><a href="./contact.html">Roadmaps</a></li>
     </ul>
   </nav>
+<!--Heading-->
+  <header>
+    <div class="head">Roadmap </div>
+  </header>
 
-  <!-- Contact Section -->
-  <section class="contact-section">
-    <h1>Contact Me</h1>
+  <!--Main Content-->
 
-    <!-- Profile Information -->
-    <div class="profile">
-      <img src="../public/Anant.jpg" alt="Profile Picture">
-      <h2>Anant Bhatnagar</h2>
-      <p>Full Stack Web Developer & AI Enthusiast</p>
-    </div>
+  <div class="content">
+    <a href="https://roadmap.sh/javascript" class="btn btn2" target="_blank">Javascript</a> 
+    <a href="https://roadmap.sh/frontend?r=frontend-beginner" class="btn" target="_blank">Front-End Devloper </a>
+    <a href="https://roadmap.sh/backend?r=backend-beginner" class="btn" target="_blank">Back-End Devloper</a>
+    <a href="https://roadmap.sh/python" class="btn" target="_blank">Python</a>
+    <a href="https://roadmap.sh/sql" class="btn" target="_blank">Sql</a>
+    <a href="https://roadmap.sh/full-stack" class="btn" target="_blank">Full-Stack </a>
+  </div>
 
-    <!-- Social Links -->
-    <div class="social-links">
-      <a href="" target="_blank" title="Email">
-        <i class="bi bi-envelope"></i>
-      </a>
-      <a href="" target="_blank" title="Instagram">
-        <i class="bi bi-instagram"></i>
-      </a>
-      <a href="" target="_blank" title="Twitter">
-        <i class="bi bi-twitter"></i>
-      </a>
-      <a href="" target="_blank" title="GitHub">
-        <i class="bi bi-github"></i>
-      </a>
-      <a href="" target="_blank" title="LinkedIn">
-        <i class="bi bi-linkedin"></i>
-      </a>
-    </div>      
-  </section>
+  <!---->
 
   <!-- Footer -->
   <footer>
-    <p>&copy; 2024 Decoding JS. All rights reserved.</p>
+    <p>&copy; 2025 Decoding JS. All rights reserved.</p>
   </footer>
 
   <!-- Font Awesome for Social Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
 </body>
 </html>
